@@ -3,11 +3,9 @@ var inputs = [];
 var outputs = [];
 var name = "";
 var unit = "";
-
 var NumberOrText = "";
 var isMandatory = Boolean;
 var isMulti = Boolean;
-var indexOfObj = -1;
 
 function createObj(name, unit, dropdown, NumberOrText, isMandatory, isMulti) {
     this.name = name;
@@ -34,9 +32,8 @@ form = document.getElementById("operation");
 
 form.onsubmit = function (e) {
     e.preventDefault();
-    indexOfObj++;
     var dropdown = [];
-    var newObj = "obj" + indexOfObj.toString();
+   
 
     newObj = new createObj(form.name.value, form.name.value, dropdown, isMandatory, isMulti);
 
