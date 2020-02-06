@@ -60,3 +60,10 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+
+
+
+  .order{
+    display: none;
+  }
