@@ -1,69 +1,145 @@
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+/*p {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}*/
 
+.processparameters-container .processparameter .save-processparameter {
+    border-color: #eaeaea;
+    color: green;
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
+    border-radius: 5px 6px 0px 0px;
+    padding: 4px 16px 0px 16px;
+}
 
+    .processparameters-container .processparameter .save-processparameter:hover {
+        background-color: #eaeaea;
+        color: gray;
+    }
 
+.processparameters-container .new-processparameter {
+    width: 100%;
+    border: 1px dashed;
+    background: white;
+    color: black;
+    padding: 4px 16px 0px 16px;
+}
 
-  .order{
-    display: none;
-  }
+    .processparameters-container .new-processparameter:hover {
+        width: 100%;
+        border: 1px dashed;
+        background: #eaeaea;
+        color: black;
+        padding: 4px 16px 0px 16px;
+    }
+
+.processparameters-container .processparameter:hover .card-action-bar {
+    display: block;
+}
+
+.processparameters-container .processparameter {
+    border: 1px solid gray;
+    
+}
+
+    .processparameters-container .processparameter .card-action-bar {
+        background-color: antiquewhite;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-top-right-radius: 5px;
+        padding: 4px 15px;
+        /* margin-right: -15px; */
+        line-height: 0;
+        display: none;
+    }
+
+    .processparameters-container .processparameter .custom-mes-switch {
+        transform: scale(0.6);
+    }
+
+    /* The switch - the box around the slider */
+    .processparameters-container .processparameter .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        /* Hide default HTML checkbox */
+        .processparameters-container .processparameter .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    /* The slider */
+    .processparameters-container .processparameter .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .processparameters-container .processparameter .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    .processparameters-container .processparameter input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    .processparameters-container .processparameter input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    .processparameters-container .processparameter input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .processparameters-container .processparameter .slider.round {
+        border-radius: 34px;
+    }
+
+        .processparameters-container .processparameter .slider.round:before {
+            border-radius: 50%;
+        }
+
+    .processparameters-container .processparameter .icon-container div {
+        height: calc(1.5em + .75rem + 2px);
+    }
+
+        .processparameters-container .processparameter .icon-container div i {
+            line-height: calc(1.5em + .75rem + 2px);
+        }
+    .processparameters-container .processparameter .selection-item label {
+    display:none;}
+    .processparameters-container .processparameter .selections-container div.selection-item:first-of-type label {
+        display: block !important;
+    }
+
+.fa-trash-alt:hover{
+
+    cursor: grab;
+
+}
+
+.fa-pencil:hover{
+    cursor: zoom-in;
+}

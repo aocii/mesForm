@@ -1,99 +1,190 @@
-var form;
-var inputs = [];
-var outputs = [];
-var name = "";
-var unit = "";
-var NumberOrText = "";
-var isMandatory = Boolean;
-var isMulti = Boolean;
+﻿var ProcessParameters = { Inputs: [], Outputs: [] };
+var template = `
+<div class="processparameter mt-3">
+                                <div class="container">
+                                    <div class="row processparameter-header" >
+                                        <div class="col-12">
+                                            <span>Ahmet</span>
+                                            <div class="card-action-bar">
+                                                <a  class="float-rigth" >
+                                                    <i class="fa fa-trash-alt"></i>
+                                                </a>
+                                                <a data-toggle="collapse" class="float-rigth" data-target="">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="collapse">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Adı</label>
+                                                <input type="text" class="form-control" name="card-mes-name-input-field">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Görünen Adı</label>
+                                                <input type="text" class="form-control" name="card-mes-name-input-field">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Format</label>
+                                                <div class="input-group mb-3">
+                                                    <select class="custom-select" name="card-mes-select-input-field">
+                                                        <option selected id="card-mes-select-input-field-special">Choose and Add Value</option>
+                                                        <option>One</option>
+                                                        <option>Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>Birim</label>
+                                                <input type="text" class="form-control" name="card-mes-unit-input-field">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p class="card-mes-text-p">Zorunlu</p>
+                                                <label class="switch custom-mes-switch">
+                                                    <input type="checkbox" name="card-mes-required-input-field">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p class="card-mes-text-p">Çoklanabilir</p>
+                                                <label class="switch custom-mes-switch">
+                                                    <input type="checkbox" name="card-mes-multiple-input-field">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row selections-container" style="display:none">             
+                                                    <div class="mb-2 col-12 row">
+                                                        <div class="col-9">
+                                                            <label>Seçim</label>
+                                                         </div>
+                                                         <div class="col-3">
+                                                            
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4"> </div>
+                                            <div class="col-sm-4">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="button" class="btn save-processparameter" value="Save">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+`;
+var DDtemplate = `
+<div class="selection-item mb-2 col-12 row">
+    <div class="col-9">
+         <input type="text" class="form-control" id="dropdown-input-field">
+     </div>
+     <div class="col-3">
+         <div class="row icon-container">
+             <div class="col-6">
+                 <i class="fas fa-trash-alt remove"></i>
+             </div>
+             <div class="col-6">
+                 <i class="fas fa-plus add"></i>
+             </div>
+         </div>
+     </div>
+</div>`;
 
-function createObj(name, unit, dropdown, NumberOrText, isMandatory, isMulti) {
-    this.name = name;
-    this.unit = unit;
-    this.dropdown = dropdown;
-    this.NumberOrText = NumberOrText;
-    this.isMandatory = isMandatory;
-    this.isMulti = isMulti;
+function createObj() {
+    return {
+        Name: null,
+        DisplayName: null,
+        Unit: null,
+        Type: null,
+        Required: null,
+        Clonable: null,
+        Value: null,
+        CloneIndex: null,
+        Selection: null,
+    };
 };
 
 
-$("#operation >select").change(function () {
-    if (this.value == "dropdown") {
-        var newInput = document.createElement("input");
-        $("#ddArea").append(newInput);
-    };
-});
+$(".processparameters-container .new-processparameter").click(function () {
+    var templateObj = $(template);
 
+    templateObj.find(".save-processparameter").click(function () {
+        var container = $(this).closest(".processparameter");
+        var obj = createObj();
+        obj.Name = container.find("input[name=card-mes-name-input-field]").val();
+        obj.DisplayName = container.find("input[name=card-mes-name-input-field]").val();
+        obj.Type = container.find("select[name=card-mes-select-input-field]").val();
+        obj.Unit = container.find("input[name=card-mes-unit-input-field]").val();
 
-
-var tbl = document.getElementById("tbl");
-
-form = document.getElementById("operation");
-
-form.onsubmit = function (e) {
-    e.preventDefault();
-    var dropdown = [];
-   
-
-    newObj = new createObj(form.name.value, form.name.value, dropdown, isMandatory, isMulti);
-
-    if (form.mandatory.checked == true) {
-        newObj.isMandatory = true;
-    } else {
-        newObj.isMandatory = false;
-    }
-
-    if (form.multi.checked == true) {
-        newObj.isMulti = true;
-    } else {
-        newObj.isMulti = false;
-
-    }
-
-    if (form.dd.value == "dropdown") {
-        newObj.dropdown.push($("#ddArea > input").val());
-    } else if (form.dd.value == "number") {
-        newObj.NumberOrText = "number";
-    } else {
-        newObj.NumberOrText = "text";
-    }
-
-    
-    var newTr = document.createElement("tr");
-    var newTd = '<td>' + newObj.name + '</td><td>' + newObj.unit + '</td><td>' + newObj.isMandatory +
-        '</td><td>' + newObj.isMulti + '</td><td>' + form.dd.value + '</td>';
-    $(newTr).append(newTd);
-
-    newTr.addEventListener("click", function () {
-
-        for (i = 0; i < $("#tbl tr").length; i++) {
-
-            if ($("#tbl tr")[i].innerText == $(this)[0].innerText) {
-                console.log($("#tbl tr")[i].innerText);
-                console.log($(this)[0].innerText)
-                inputs.splice(i, 1);
-                console.log(inputs)
-            }
-
+        obj.Selection = [];
+        var selections = container.find(".selections-container .selection-item input");
+        for (var i = 0; i < selections.length; i++) {
+            obj.Selection.push({ Value: $(selections[i]).val(), Text: $(selections[i]).val() });
         }
+        obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
+        obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
+        ProcessParameters.Inputs.push(obj);
 
-        form.name.value = $(this.childNodes)[0].textContent;
-        form.unit.value = $(this.childNodes)[1].textContent;
-        form.mandatory.value = $(this.childNodes)[2].textContent;
-        form.multi.value = $(this.childNodes)[3].textContent;
-        form.dd.value = $(this.childNodes)[4].textContent;
-        $(this).remove();
 
     });
 
-    $(tbl).append(newTr);
+    templateObj.find(".processparameter-header .fa-trash-alt ").on("click", function () {
+        var objName = $(this).closest(".processparameter").find("input").first().val();
+
+        for (i = 0; i < ProcessParameters.Inputs.length; i++) {
+            if (ProcessParameters.Inputs[i].Name == objName) {
+                ProcessParameters.Inputs.splice(i, 1);
+                $(".processparameter")[i].remove();
+            };
+        };
+        
+    });
+
+    templateObj.find(".processparameter-header .fa-pencil ").on("click", function () {
+
+        $(this).closest(".processparameter").find(".collapse").toggle();
+
+        
+
+    });
 
 
 
-    inputs.push(newObj);
-    console.log(inputs)
-    form.reset();
+    templateObj.find("select[name=card-mes-select-input-field]").on("change", function () {
+
+        $(this).closest(".processparameter").find(".selections-container").show().find(".selection-item").remove();
+        if ($(this).val() == "3") {
+            $(this).closest(".processparameter").find(".selections-container").append(addSelection());
+        } else {
+            $(this).closest(".processparameter").find(".selections-container").hide();
+        }
+    });
+
+    function addSelection() {
+        var selectionTemplate = $(DDtemplate);
+        selectionTemplate.find(".add").click(function () {
+            var tempSelection = addSelection();
+            tempSelection.insertAfter($(this).closest(".selection-item"));
+        });
+        selectionTemplate.find(".remove").click(function () {
+            $(this).closest(".selection-item").remove();
+        });
+        return selectionTemplate;
+    }
+
+    templateObj.prependTo($(".processparameters-container"));
+
+    //$(".processparameter").find("input").first().val()
+
+    //$(".processparameter").on("click")
+});
 
 
-};
 

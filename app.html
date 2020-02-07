@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -8,78 +8,30 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="app.css">
-    
+    <script src="https://kit.fontawesome.com/3c2e4801d3.js" crossorigin="anonymous"></script>
     <title>Hello, world!</title>
 </head>
 
 <body>
 
-
-
     <div class="container">
-
-        <form action="" id="operation">
-
-            <label for="thing">adı</label>
-            <input type="text" name="name">
-            <br>
-
-            <label for="thing">birim</label>
-            <input type="text" name="unit"><br>
-
-            <input type="checkbox" name="mandatory" > zorunlu <br>
-            <input type="checkbox" name="multi" > çoklanabilir<br>
-
-            <br>
-            
-
-            <select name="dd">
-                <option value="number">number</option>
-                <option value="text">text</option>
-                <option value="dropdown">dropdown</option>
-            </select>
-
-            <div id="ddArea">
-
-            </div>
-
-
-            <button type="submit">submit</button>
-
-        </form>
-
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">adı</th>
-                <th scope="col">birim</th>
-                <th scope="col">zorunlu</th>
-                <th scope="col">çoklu</th>
-                <th scope="col">tip</th>
-              </tr>
-            </thead>
-            <tbody id="tbl" >
-              
-
-            </tbody>
-          </table>
-
+        <div class="processparameters-container">
+            <input type="button" class="btn mt-3 new-processparameter" value="Add Parameter">
+        </div>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
- 
+
 
     <script src="app.js"></script>
 </body>
