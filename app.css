@@ -1,57 +1,62 @@
-/*p {
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
-}*/
 
 .processparameters-container .processparameter .save-processparameter {
-    border-color: #eaeaea;
-    color: green;
+    border-color: rgb(206, 212, 218);
+    color: rgb(40, 167, 69);
     border-bottom: 1px solid white;
     margin-bottom: -1px;
     border-radius: 5px 6px 0px 0px;
     padding: 4px 16px 0px 16px;
+    font-size: 14px;
 }
 
     .processparameters-container .processparameter .save-processparameter:hover {
-        background-color: #eaeaea;
-        color: gray;
+        font-weight: bold;
     }
 
 .processparameters-container .new-processparameter {
     width: 100%;
-    border: 1px dashed;
+    border: 1px #B9B9B9 dashed;
+    border-radius: 2px;
     background: white;
     color: black;
-    padding: 4px 16px 0px 16px;
+    font-size: 12px;
+    line-height: 30px;
+    margin-bottom: 6px;
 }
 
     .processparameters-container .new-processparameter:hover {
-        width: 100%;
-        border: 1px dashed;
-        background: #eaeaea;
-        color: black;
-        padding: 4px 16px 0px 16px;
+        background: rgb(248,248,248);
     }
 
 .processparameters-container .processparameter:hover .card-action-bar {
     display: block;
+    padding: 7px 7px 7px 5px;
 }
 
 .processparameters-container .processparameter {
-    border: 1px solid gray;
-    
+    border: 1px solid rgb(206, 212, 218);
+    border-radius: 3px 3px 3px 3px;
 }
 
+    .processparameters-container .processparameter .processparameter-header {
+        line-height: 40px;
+    }
+
+    .processparameters-container .processparameter .processparameter-body > div {
+        margin-bottom: 16px;
+    }
+
+
     .processparameters-container .processparameter .card-action-bar {
-        background-color: antiquewhite;
+        background-color: rgb(206, 212, 218);
         position: absolute;
         top: 0;
         right: 0;
-        border-top-right-radius: 5px;
-        padding: 4px 15px;
-        /* margin-right: -15px; */
+        border-radius: 0 3px 0 3px;
+        padding: 4px 8px;
         line-height: 0;
         display: none;
+        margin-top: -1px;
     }
 
     .processparameters-container .processparameter .custom-mes-switch {
@@ -127,19 +132,20 @@
 
         .processparameters-container .processparameter .icon-container div i {
             line-height: calc(1.5em + .75rem + 2px);
+            color: rgb(121, 121, 121);
         }
-    .processparameters-container .processparameter .selection-item label {
-    display:none;}
-    .processparameters-container .processparameter .selections-container div.selection-item:first-of-type label {
-        display: block !important;
+
+
+            .processparameters-container .processparameter .icon-container div i:hover {
+                color: rgb(48, 79, 143);
+            }
+
+    .processparameters-container .processparameter .card-action-bar i {
+        color: white;
+        font-size: 12px;
+        margin-left: 5px;
     }
 
-.fa-trash-alt:hover{
-
-    cursor: grab;
-
-}
-
-.fa-pencil:hover{
-    cursor: zoom-in;
-}
+        .processparameters-container .processparameter .card-action-bar i:hover {
+            color: rgb(48, 79, 143);
+        }
