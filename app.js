@@ -17,7 +17,7 @@
                                 <div class="container">
                                     <div class="row processparameter-header">
                                         <div class="col-12">
-                                            <span>Ahmet</span>
+                                            <span class="param-name">Add parameter</span>
                                             <div class="card-action-bar">
                                                 <a data-toggle="collapse" class="float-rigth" data-target="#collapse11">
                                                     <i class="fa fa-trash-alt deleteParameter"></i>
@@ -42,7 +42,7 @@
                                             <div class="col-sm-6">
                                                 <label>Format</label>
                                                 <div class="input-group">
-                                                    <select class="custom-select" name="card-mes-select-input-field">
+                                                    <select class="form-control" name="card-mes-select-input-field">
                                                         <option selected id="card-mes-select-input-field-special">Choose and Add Value</option>
                                                         <option>One</option>
                                                         <option>Two</option>
@@ -68,10 +68,8 @@
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-
                                             <div class="col-sm-6">
                                                 <div class="row selections-container">
-                                                    
                                             </div></div>
                                         </div>
                                         <div class="row footer">
@@ -104,6 +102,8 @@
                                                         </div>
                                                     </div>`;
             var addButtonTemplate = `<input type="button" class="btn mt-3 new-processparameter" value="Add Parameter">`;
+
+
 
 
             function createObj() {
@@ -139,6 +139,17 @@
                 $container.data("processparameters", JSON.stringify(processParameters));
             }
 
+            function getProcessParmeterByName(name) {
+                var parmeters = getProcessParameters();
+                for (var i = 0; i < parmeters.length; i++) {
+                    if (parmeters[i].Name == name) {
+                        //return parmeters[i];
+                        return true;
+                    }
+                }
+                //return null;  bunu niye yaptın ? 
+                return false;
+            }
             function updateProcessParameter(key, processParameter) {
                 var processParmeters = getProcessParameters();
                 for (var i = 0; i < processParmeters.length; i++) {
@@ -149,20 +160,47 @@
                         return;
                     }
                 }
-               
+
             }
+
+
+
 
             var $container = this.item;
             $container.addClass("processparameters-container");
             $container.append($(addButtonTemplate));
             $container.find(".new-processparameter").click(function () {
                 var templateObj = $(template);
+
+                $(".collapse").hide();
+                $(".processparameter-header").show();
+
+                var nameInput = templateObj.find("input[name=card-mes-name-input-field]");
+                nameInput.keypress(function (e) {
+                    var k;
+                    document.all ? k = e.keyCode : k = e.which;
+                    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || (k >= 48 && k <= 57));
+
+                });
+
+
                 templateObj.find(".save-processparameter").click(function () {
                     var container = $(this).closest(".processparameter");
-                    $(this).closest(".processparameter-header").toggle();
 
                     var obj = createObj();
-                    obj.Name = container.find("input[name=card-mes-name-input-field]").val();
+
+                    var paramName = container.find("input[name=card-mes-name-input-field]").val();
+
+
+                    if (getProcessParmeterByName(paramName)) {
+                        alert("dikkat gardaşım")
+
+                    } else {
+                        obj.Name = paramName;
+                    };
+
+
+
                     obj.DisplayName = container.find("input[name=card-mes-displayname-input-field]").val();
                     obj.Type = container.find("select[name=card-mes-select-input-field]").val();
                     obj.Unit = container.find("input[name=card-mes-unit-input-field]").val();
@@ -174,17 +212,39 @@
                     }
                     obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
                     obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
-
+                    var objVals = Object.values(obj);
+                    function isValsNull(objvals) {
+                        for (i = 0; i < objvals.length - 3; i++) {
+                            console.log(objvals[i])
+                            if (objvals[i] == "" || objvals[i] == null) {
+                                console.log(objvals[i])
+                                return true;
+                            } else {
+                                return false;
+                            }
+                            
+                        }
+                    }
+                    console.log(objVals);
                     var hiddenNameInput = container.find("input[name='parameter-name']");
                     var existedName = hiddenNameInput.val();
                     if (!!existedName) {
                         updateProcessParameter(existedName, obj)
-                    } else
-                        addProcessParameter(obj);
+                    } else {
+                        if (isValsNull(objVals)) {
+                            alert("inputları doldurr");
+                        } else {
+                            console.log(obj + "----------------");
+                            addProcessParameter(obj)
+                        }
+                    }
 
                     hiddenNameInput.val(obj.Name);
                     $(this).closest(".collapse").toggle();
-
+                    if (obj.DisplayName != "") {
+                        $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
+                    }
+                    $(this).closest(".processparameter").find(".processparameter-header").toggle();
                 });
 
                 templateObj.find(".processparameter-header .deleteParameter").on("click", function () {
@@ -207,6 +267,8 @@
                 });
 
                 templateObj.find(".processparameter-header .editParameter ").on("click", function () {
+                    $(".collapse").hide();
+                    $(".processparameter-header").show();
                     $(this).closest(".processparameter").find(".collapse").toggle();
                     $(this).closest(".processparameter-header").toggle();
                 });
@@ -232,9 +294,11 @@
                     });
                     return selectionTemplate;
                 }
-
                 templateObj.insertBefore($(this));
+                templateObj.find(".collapse").toggle();
+                templateObj.find(".processparameter-header").toggle();
             });
+
         },
         getData: function () {
             var processParameters = this.item.data("processparameters");
@@ -263,11 +327,19 @@
         }
         return this;
     };
+
+    //function checkEntry(e) {
+    //    var k;
+    //    document.all ? k = e.keyCode : k = e.which;
+    //    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+    //}
+
 }(jQuery));
 
 
 $(".cont").ProcessParameter("getData");
 $(".cont2").ProcessParameter("getData")
+
 
 
 
