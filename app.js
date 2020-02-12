@@ -1,4 +1,4 @@
-//test comment﻿
+
 (function ($) {
 
     function ProcessParameter(item, options) {
@@ -43,10 +43,11 @@
                                                 <label>Format</label>
                                                 <div class="input-group">
                                                     <select class="form-control" name="card-mes-select-input-field">
-                                                        <option selected id="card-mes-select-input-field-special">Choose and Add Value</option>
-                                                        <option>One</option>
-                                                        <option>Two</option>
-                                                        <option value="3">Three</option>
+                                                        <option selected="selected" id="card-mes-select-input-field-special">Choose and Add Value</option>
+                                                        <option value="1">Text</option>
+                                                        <option value="2">Number</option>
+                                                        <option value="3">Dropdown</option>
+                                                        <option value="4">Checkbox</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -73,13 +74,18 @@
                                             </div></div>
                                         </div>
                                         <div class="row footer">
-                                            <div class="col-sm-4"> </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3"> </div>
+                                            <div class="col-sm-3">
                                                 <div class="d-flex justify-content-center">
                                                     <input type="button" class="btn save-processparameter" value="Save">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4"> </div>
+                                            <div class="col-sm-3">
+                                                <div class="d-flex justify-content-center">
+                                                    <input type="button" class="btn cancel-processparameter" value="cancel">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3"> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,7 +153,7 @@
                         return true;
                     }
                 }
-                //return null;  bunu niye yaptın ?
+                //return null;  bunu niye yaptın ? 
                 return false;
             }
             function updateProcessParameter(key, processParameter) {
@@ -183,87 +189,114 @@
 
                 });
 
+                templateObj.find(".cancel-processparameter").click(function () {
+                    var container = $(this).closest(".processparameter");
+                    var inputs = container.find(".form-control");
+                    var changedInputs = 0;
+                    for (i = 0; i < inputs.length; i++) {
+                        if (inputs[i].value != "" && inputs[i].value != "Choose and Add Value") {
+                            console.log(inputs[i].value)
+                            changedInputs++;
+                        }
+                    }
+                    if (changedInputs > 0) {
+                        console.log(container.find(".form-control"));
+                        alert("değişiklik var" + changedInputs)
+                    } else {
+                        container.remove();
+                        changedInputs = 0;
+                    }
 
+
+                });
                 templateObj.find(".save-processparameter").click(function () {
                     var container = $(this).closest(".processparameter");
 
-                    var obj = createObj();
-
-                    var paramName = container.find("input[name=card-mes-name-input-field]").val();
-
-
-                    if (getProcessParmeterByName(paramName)) {
-                        alert("obje name kısmı tekrar ediyor")
-
-                    } else {
-                        obj.Name = paramName;
-                    };
-
-
-
-                    obj.DisplayName = container.find("input[name=card-mes-displayname-input-field]").val();
-                    obj.Type = container.find("select[name=card-mes-select-input-field]").val();
-                    obj.Unit = container.find("input[name=card-mes-unit-input-field]").val();
-
-                    obj.Selection = [];
-                    var selections = container.find(".selections-container .selection-item input");
-                    for (var i = 0; i < selections.length; i++) {
-                        obj.Selection.push({ Value: $(selections[i]).val(), Text: $(selections[i]).val() });
-                    }
-                    obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
-                    obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
-<<<<<<< HEAD
-                    //var objVals = Object.values(obj);
-                    //function isValsNull(objvals) {
-                    //    for (i = 0; i < objvals.length - 3; i++) {
-                    //        console.log(objvals[i])
-                    //        if (objvals[i] == "" || objvals[i] == null) {
-                    //            console.log(objvals[i])
-                    //            return true;
-                    //        } else {
-                    //            return false;
-                    //        }
-                            
-                    //    }
-                    //}
-                    //console.log(objVals);
-=======
-                    var objVals = Object.values(obj);
-                    function isValsNull(objvals) {
-                        for (i = 0; i < objvals.length - 3; i++) {
-                            console.log(objvals[i])
-                            if (objvals[i] == "" || objvals[i] == null) {
-                                console.log(objvals[i])
-                                return true;
-                            } else {
-                                return false;
-                            }
-
+                    var inputs = container.find(".form-control");
+                    var changedInputs = 0;
+                    for (i = 0; i < inputs.length; i++) {
+                        if (inputs[i].value != "" && inputs[i].value != "Choose and Add Value") {
+                            console.log(inputs[i].value)
+                            changedInputs++;
                         }
                     }
-                    console.log(objVals);
->>>>>>> 4000a50432dedc753302e2214671571423145bfd
-                    var hiddenNameInput = container.find("input[name='parameter-name']");
-                    var existedName = hiddenNameInput.val();
-                    if (!!existedName) {
-                        updateProcessParameter(existedName, obj)
+                    if (changedInputs < inputs.length) {
+                        //console.log(container.find(".form-control"));
+                        //console.log(changedInputs);
+                        //console.log(inputs.length);
+                        //alert("değişiklik var" + changedInputs);
+                        alert("boş input var");
+
                     } else {
-                        
-                        if (obj.Name == null) {
-                            console.log("obje name null")
+                        var obj = createObj();
+
+                        var paramName = container.find("input[name=card-mes-name-input-field]").val();
+
+
+                        if (getProcessParmeterByName(paramName)) {
+                            alert("obje name kısmı tekrar ediyor ")
+
                         } else {
-                            addProcessParameter(obj);
-                            $(this).closest(".collapse").toggle();
+                            obj.Name = paramName;
+                        };
+
+
+
+                        obj.DisplayName = container.find("input[name=card-mes-displayname-input-field]").val();
+                        obj.Type = container.find("select[name=card-mes-select-input-field]").val();
+                        obj.Unit = container.find("input[name=card-mes-unit-input-field]").val();
+
+                        obj.Selection = [];
+                        var selections = container.find(".selections-container .selection-item input");
+                        for (var i = 0; i < selections.length; i++) {
+                            obj.Selection.push({ Value: $(selections[i]).val(), Text: $(selections[i]).val() });
                         }
+                        obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
+                        obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
+                        //var objVals = Object.values(obj);
+                        //function isValsNull(objvals) {
+                        //    for (i = 0; i < objvals.length - 3; i++) {
+                        //        console.log(objvals[i])
+                        //        if (objvals[i] == "" || objvals[i] == null) {
+                        //            console.log(objvals[i])
+                        //            return true;
+                        //        } else {
+                        //            return false;
+                        //        }
+
+                        //    }
+                        //}
+                        //console.log(objVals);
+                        var hiddenNameInput = container.find("input[name='parameter-name']");
+                        var existedName = hiddenNameInput.val();
+                        if (!!existedName) {
+                            updateProcessParameter(existedName, obj)
+                        } else {
+
+                            if (obj.Name == null) {
+                                console.log("obje name null")
+                            } else {
+                                addProcessParameter(obj);
+                                $(this).closest(".collapse").toggle();
+
+                            }
+                        }
+
+                        hiddenNameInput.val(obj.Name);
+
+                        if (obj.DisplayName != "") {
+                            $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
+                        }
+                        $(this).closest(".processparameter").find(".processparameter-header").toggle();
+                        //container.remove();
+                        //changedInputs = 0;
                     }
 
-                    hiddenNameInput.val(obj.Name);
-                    
-                    if (obj.DisplayName != "") {
-                        $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
-                    }
-                    $(this).closest(".processparameter").find(".processparameter-header").toggle();
+
                 });
+
+
+                //---------------------------------------------
 
                 templateObj.find(".processparameter-header .deleteParameter").on("click", function () {
                     var objName = $(this).closest(".processparameter").find("input").first().val();
@@ -357,3 +390,7 @@
 
 $(".cont").ProcessParameter("getData");
 $(".cont2").ProcessParameter("getData")
+
+
+
+

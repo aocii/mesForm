@@ -12,6 +12,19 @@
     .processparameters-container .processparameter .save-processparameter:hover {
         font-weight: bold;
     }
+.processparameters-container .processparameter .cancel-processparameter {
+    border-color: rgb(206, 212, 218);
+    color: gray;
+    border-bottom: 1px solid white;
+    margin-bottom: -1px;
+    border-radius: 5px 6px 0px 0px;
+    padding: 4px 16px 0px 16px;
+    font-size: 14px;
+}
+
+    .processparameters-container .processparameter .cancel-processparameter:hover {
+        font-weight: bold;
+    }
 
 .processparameters-container .new-processparameter {
     width: 100%;
