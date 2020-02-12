@@ -193,7 +193,7 @@
 
 
                     if (getProcessParmeterByName(paramName)) {
-                        alert("dikkat gardaşım")
+                        alert("obje name kısmı tekrar ediyor")
 
                     } else {
                         obj.Name = paramName;
@@ -212,35 +212,36 @@
                     }
                     obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
                     obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
-                    var objVals = Object.values(obj);
-                    function isValsNull(objvals) {
-                        for (i = 0; i < objvals.length - 3; i++) {
-                            console.log(objvals[i])
-                            if (objvals[i] == "" || objvals[i] == null) {
-                                console.log(objvals[i])
-                                return true;
-                            } else {
-                                return false;
-                            }
+                    //var objVals = Object.values(obj);
+                    //function isValsNull(objvals) {
+                    //    for (i = 0; i < objvals.length - 3; i++) {
+                    //        console.log(objvals[i])
+                    //        if (objvals[i] == "" || objvals[i] == null) {
+                    //            console.log(objvals[i])
+                    //            return true;
+                    //        } else {
+                    //            return false;
+                    //        }
                             
-                        }
-                    }
-                    console.log(objVals);
+                    //    }
+                    //}
+                    //console.log(objVals);
                     var hiddenNameInput = container.find("input[name='parameter-name']");
                     var existedName = hiddenNameInput.val();
                     if (!!existedName) {
                         updateProcessParameter(existedName, obj)
                     } else {
-                        if (isValsNull(objVals)) {
-                            alert("inputları doldurr");
+                        
+                        if (obj.Name == null) {
+                            console.log("obje name null")
                         } else {
-                            console.log(obj + "----------------");
-                            addProcessParameter(obj)
+                            addProcessParameter(obj);
+                            $(this).closest(".collapse").toggle();
                         }
                     }
 
                     hiddenNameInput.val(obj.Name);
-                    $(this).closest(".collapse").toggle();
+                    
                     if (obj.DisplayName != "") {
                         $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
                     }
