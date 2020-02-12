@@ -1,4 +1,4 @@
-﻿
+//test comment﻿
 (function ($) {
 
     function ProcessParameter(item, options) {
@@ -147,7 +147,7 @@
                         return true;
                     }
                 }
-                //return null;  bunu niye yaptın ? 
+                //return null;  bunu niye yaptın ?
                 return false;
             }
             function updateProcessParameter(key, processParameter) {
@@ -212,6 +212,7 @@
                     }
                     obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
                     obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
+<<<<<<< HEAD
                     //var objVals = Object.values(obj);
                     //function isValsNull(objvals) {
                     //    for (i = 0; i < objvals.length - 3; i++) {
@@ -226,6 +227,22 @@
                     //    }
                     //}
                     //console.log(objVals);
+=======
+                    var objVals = Object.values(obj);
+                    function isValsNull(objvals) {
+                        for (i = 0; i < objvals.length - 3; i++) {
+                            console.log(objvals[i])
+                            if (objvals[i] == "" || objvals[i] == null) {
+                                console.log(objvals[i])
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        }
+                    }
+                    console.log(objVals);
+>>>>>>> 4000a50432dedc753302e2214671571423145bfd
                     var hiddenNameInput = container.find("input[name='parameter-name']");
                     var existedName = hiddenNameInput.val();
                     if (!!existedName) {
@@ -340,7 +357,3 @@
 
 $(".cont").ProcessParameter("getData");
 $(".cont2").ProcessParameter("getData")
-
-
-
-
