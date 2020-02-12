@@ -1,6 +1,8 @@
 
 (function ($) {
 
+
+
     function ProcessParameter(item, options) {
 
 
@@ -149,11 +151,10 @@
                 var parmeters = getProcessParameters();
                 for (var i = 0; i < parmeters.length; i++) {
                     if (parmeters[i].Name == name) {
-                        //return parmeters[i];
-                        return true;
+                        return [i, parmeters[i]];
+
                     }
                 }
-                //return null;  bunu niye yaptın ? 
                 return false;
             }
             function updateProcessParameter(key, processParameter) {
@@ -168,7 +169,6 @@
                 }
 
             }
-
 
 
 
@@ -195,12 +195,12 @@
                     var changedInputs = 0;
                     for (i = 0; i < inputs.length; i++) {
                         if (inputs[i].value != "" && inputs[i].value != "Choose and Add Value") {
-                            console.log(inputs[i].value)
+                            //console.log(inputs[i].value)
                             changedInputs++;
                         }
                     }
                     if (changedInputs > 0) {
-                        console.log(container.find(".form-control"));
+                        //console.log(container.find(".form-control"));
                         alert("değişiklik var" + changedInputs)
                     } else {
                         container.remove();
@@ -213,35 +213,27 @@
                     var container = $(this).closest(".processparameter");
 
                     var inputs = container.find(".form-control");
-                    var changedInputs = 0;
+                    var chargedInputs = 0;
                     for (i = 0; i < inputs.length; i++) {
                         if (inputs[i].value != "" && inputs[i].value != "Choose and Add Value") {
-                            console.log(inputs[i].value)
-                            changedInputs++;
+                            chargedInputs++;
                         }
-                    }
-                    if (changedInputs < inputs.length) {
-                        //console.log(container.find(".form-control"));
-                        //console.log(changedInputs);
-                        //console.log(inputs.length);
-                        //alert("değişiklik var" + changedInputs);
-                        alert("boş input var");
-
+                    };
+                    if (chargedInputs < inputs.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Lütfen bütün inputları doldurunuz'
+                        });
                     } else {
+
                         var obj = createObj();
+
+                        var hiddenNameInput = container.find("input[name='parameter-name']");
 
                         var paramName = container.find("input[name=card-mes-name-input-field]").val();
 
-
-                        if (getProcessParmeterByName(paramName)) {
-                            alert("obje name kısmı tekrar ediyor ")
-
-                        } else {
-                            obj.Name = paramName;
-                        };
-
-
-
+                        obj.Name = paramName;
                         obj.DisplayName = container.find("input[name=card-mes-displayname-input-field]").val();
                         obj.Type = container.find("select[name=card-mes-select-input-field]").val();
                         obj.Unit = container.find("input[name=card-mes-unit-input-field]").val();
@@ -253,43 +245,52 @@
                         }
                         obj.Required = container.find("input[name=card-mes-required-input-field]")[0].checked;
                         obj.Clonable = container.find("input[name=card-mes-multiple-input-field]")[0].checked;
-                        //var objVals = Object.values(obj);
-                        //function isValsNull(objvals) {
-                        //    for (i = 0; i < objvals.length - 3; i++) {
-                        //        console.log(objvals[i])
-                        //        if (objvals[i] == "" || objvals[i] == null) {
-                        //            console.log(objvals[i])
-                        //            return true;
-                        //        } else {
-                        //            return false;
-                        //        }
 
-                        //    }
-                        //}
-                        //console.log(objVals);
-                        var hiddenNameInput = container.find("input[name='parameter-name']");
-                        var existedName = hiddenNameInput.val();
-                        if (!!existedName) {
-                            updateProcessParameter(existedName, obj)
-                        } else {
 
-                            if (obj.Name == null) {
-                                console.log("obje name null")
-                            } else {
-                                addProcessParameter(obj);
+
+                        var existedName = container.find("input[name='parameter-name']").val();
+                        var isInJson = getProcessParmeterByName(existedName)
+                        console.log(isInJson + "---------------------");
+                        if (existedName) {
+
+                            jsonOrder = isInJson[0]
+                            console.log(isInJson[1] + "is in jason")
+                            console.log(jsonOrder + "jason order");
+                           
+                            console.log(existedName + "existedname")
+                            if (!existedName) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'İsim, başka parametre ismi ile çakışıyor!'
+                                });
+                                return
+                            } else if (existedName == isInJson[1].Name) {
+                                console.log("jsonda vardı, edit yapıldı")
+                                updateProcessParameter(existedName, obj)
+                                hiddenNameInput.val(obj.Name);
                                 $(this).closest(".collapse").toggle();
-
+                                $(this).closest(".processparameter").find(".processparameter-header").toggle();
                             }
-                        }
+                            if (obj.DisplayName != "") {
+                                $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
+                            }
 
-                        hiddenNameInput.val(obj.Name);
 
-                        if (obj.DisplayName != "") {
-                            $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
-                        }
-                        $(this).closest(".processparameter").find(".processparameter-header").toggle();
-                        //container.remove();
-                        //changedInputs = 0;
+                        } else {
+                            console.log(" yeni json objesi ekledin ")
+                            addProcessParameter(obj);
+                            hiddenNameInput.val(obj.Name);
+                            $(this).closest(".collapse").toggle();
+                            if (obj.DisplayName != "") {
+                                $(this).closest(".processparameter").find(".param-name")[0].innerText = obj.DisplayName;
+                            }
+                            $(this).closest(".processparameter").find(".processparameter-header").toggle();
+                        };
+
+
+
+
                     }
 
 
@@ -378,12 +379,6 @@
         }
         return this;
     };
-
-    //function checkEntry(e) {
-    //    var k;
-    //    document.all ? k = e.keyCode : k = e.which;
-    //    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
-    //}
 
 }(jQuery));
 
