@@ -1,4 +1,4 @@
-﻿
+//test comment﻿
 (function ($) {
 
     function ProcessParameter(item, options) {
@@ -147,7 +147,7 @@
                         return true;
                     }
                 }
-                //return null;  bunu niye yaptın ? 
+                //return null;  bunu niye yaptın ?
                 return false;
             }
             function updateProcessParameter(key, processParameter) {
@@ -222,7 +222,7 @@
                             } else {
                                 return false;
                             }
-                            
+
                         }
                     }
                     console.log(objVals);
@@ -339,7 +339,3 @@
 
 $(".cont").ProcessParameter("getData");
 $(".cont2").ProcessParameter("getData")
-
-
-
-
