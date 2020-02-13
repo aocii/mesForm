@@ -1,3 +1,7 @@
+.processparameters-container {
+    list-style: none !important;
+    padding-left: 0;
+}
 
 .processparameters-container .processparameter .save-processparameter {
     border-color: rgb(206, 212, 218);
@@ -12,6 +16,7 @@
     .processparameters-container .processparameter .save-processparameter:hover {
         font-weight: bold;
     }
+
 .processparameters-container .processparameter .cancel-processparameter {
     border-color: rgb(206, 212, 218);
     color: gray;
@@ -162,3 +167,14 @@
         .processparameters-container .processparameter .card-action-bar i:hover {
             color: rgb(48, 79, 143);
         }
+
+    .processparameters-container .processparameter.dragging {
+        background-color:white;        
+        opacity: 0.5;
+        z-index: 2000;
+        visibility:visible !important;
+    }
+
+    .processparameters-container .processparameter.active {
+        visibility:hidden;    
+    }
