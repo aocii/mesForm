@@ -8,11 +8,16 @@
         this.options = $.extend({
             checkboxItemEnabled: false
         }, options);
+        if (!this.options.ProcessParameters)
+            this.options.ProcessParameters = [];
         this.item = $(item);
         this.init();
     }
     ProcessParameter.prototype = {
         init: function () {
+
+
+
 
             var InputType = {
                 Text: "1",
@@ -119,9 +124,6 @@
                                                     </div>`;
             var addButtonTemplate = `<input type="button" class="btn mt-3 new-processparameter" value="Add Parameter">`;
 
-
-
-
             function createObj() {
                 return {
                     Name: null,
@@ -180,15 +182,44 @@
 
             }
 
-            function reloadProcessParameters(processParameters) {
+            function collapseAll() {
+                $container.find(".collapse").removeClass("show");
+                $container.find(".processparameter-header").show();
+            }
 
+            function saveParameter(processParameter, hiddenNameInput) {
+                var existedItem;
+
+                var existedName = hiddenNameInput ? hiddenNameInput.val() : null;
+                if (existedName && existedName == processParameter.Name) {
+                    existedItem = null;
+                }
+                else {
+                    existedItem = getProcessParmeterByName(processParameter.Name);
+                }
+
+                if (existedItem) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'İsim, başka parametre ismi ile çakışıyor!'
+                    });
+                    return
+                }
+                if (existedName)
+                    updateProcessParameter(existedName, processParameter)
+                else
+                    addProcessParameter(processParameter);
+
+                hiddenNameInput.val(processParameter.Name);
+                collapseAll();
+                $(this).closest(".processparameter").find(".param-name").text(processParameter.DisplayName);
             }
 
             function addParameter(jsonData) {
                 var templateObj = $(template);
 
-                $container.find(".collapse").removeClass("show");
-                $container.find(".processparameter-header").show();
+                collapseAll();
 
                 var nameInput = templateObj.find("input[name=card-mes-name-input-field]");
                 nameInput.keypress(function (e) {
@@ -235,50 +266,21 @@
                         } else if (result.dismiss == "continue") {
                             return;
                         }
-                        updateProcessParameter(hiddenNameInput.val(), newObj);
-                        hiddenNameInput.val(newObj.Name);
+                        saveParameter(newObj, hiddenNameInput);
+
 
                         Swal.fire(
                             'Kaydedildi!',
                             'Parametre güncellemeniz kaydedildi',
                             'success'
                         )
-
-                        $(this).closest(".collapse").toggle();
-                        $(this).closest(".processparameter").find(".processparameter-header").toggle();
                     });
 
                 });
                 templateObj.find(".save-processparameter").click(function () {
                     var container = $(this).closest(".processparameter");
                     var obj = getJsonForProcessParameter(container);
-                    var hiddenNameInput = container.find("input[name='parameter-name']");
-                    var existedName = hiddenNameInput.val();
-                    var existedItem;
-                    if (existedName && existedName == obj.Name) {
-                        existedItem = null;
-                    }
-                    else {
-                        existedItem = getProcessParmeterByName(obj.Name);
-                    }
-
-                    if (existedItem) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'İsim, başka parametre ismi ile çakışıyor!'
-                        });
-                        return
-                    }
-                    if (existedName)
-                        updateProcessParameter(existedName, obj)
-                    else
-                        addProcessParameter(obj);
-
-                    hiddenNameInput.val(obj.Name);
-                    $(this).closest(".collapse").toggle();
-                    $(this).closest(".processparameter").find(".processparameter-header").toggle();
-                    $(this).closest(".processparameter").find(".param-name").text(obj.DisplayName);
+                    saveParameter(obj, container.find("input[name='parameter-name']"));
                 });
                 templateObj.find(".processparameter-header .deleteParameter").on("click", function () {
                     var objName = $(this).closest(".processparameter").find("input").first().val();
@@ -299,7 +301,8 @@
 
                 });
                 templateObj.find(".processparameter-header .editParameter ").on("click", function () {
-                    $(".collapse").hide();
+                    //$(".collapse").hide();
+                    //$(".cont").find(".collapse").removeClass("show");
                     $(".processparameter-header").show();
                     $(this).closest(".processparameter").find(".collapse").toggle();
                     $(this).closest(".processparameter-header").toggle();
@@ -313,11 +316,8 @@
                         $(this).closest(".processparameter").find(".selections-container").hide();
                     }
                 });
-
-                templateObj.find(".collapse").addClass("show");
-                templateObj.find(".processparameter-header").hide();
-
-
+                //templateObj.find(".collapse").addClass("show");
+                //templateObj.find(".processparameter-header").hide();
 
                 if (jsonData) {
                     templateObj.find("input[name=card-mes-name-input-field]").val(jsonData.Name);
@@ -334,6 +334,7 @@
                     templateObj.find("input[name=card-mes-required-input-field]")[0].checked = jsonData.Required;
                     templateObj.find("input[name=card-mes-multiple-input-field]")[0].checked = jsonData.Clonable;
                     templateObj.find("input[name=parameter-name]").val(jsonData.Name);
+                    templateObj.find(".param-name").text(jsonData.DisplayName);
                 }
                 return templateObj;
             }
@@ -375,14 +376,38 @@
                 return obj;
             }
 
+            function reloadProcessParameters(processParameters) {
+
+            }
+
+            function orderJsonFromByElements() {
+
+                var processParameters = [];
+                var elements = $container.find(".processparameter");
+                for (var i = 0; i < elements.length; i++) {
+                    processParameters.push(getJsonForProcessParameter($(elements[i])));
+                }
+                updateProcessParameters(processParameters);
+            }
             var $container = this.item;
+
+
+            $container.qualistsortable({ onAfterRelease: orderJsonFromByElements })
 
             $container.addClass("processparameters-container");
             $container.append($(addButtonTemplate));
             $container.find(".new-processparameter").click(function () {
                 addParameter().insertBefore($(this));
+                $(this).find(".collapse").show();
 
             });
+
+            var addNewButton = $container.find(".new-processparameter");
+            for (var i = 0; i < this.options.ProcessParameters.length; i++) {
+                addParameter(this.options.ProcessParameters[i]).insertBefore(addNewButton);
+            }
+            updateProcessParameters(this.options.ProcessParameters);
+            //collapseAll();
         },
         getData: function () {
             var processParameters = this.item.data("processparameters");
@@ -416,12 +441,14 @@
 
 }(jQuery));
 
+
+
+
+
 $(document).ready(function () {
-    $(".cont").ProcessParameter("getData");
+    $(".cont").ProcessParameter({
+        ProcessParameters: [{ "Name": "ahmet", "DisplayName": "4", "Unit": "", "Type": "2", "Required": false, "Clonable": false, "Value": null, "CloneIndex": null, "Selection": [] }, { "Name": "3", "DisplayName": "3", "Unit": "", "Type": "Choose and Add Value", "Required": false, "Clonable": false, "Value": null, "CloneIndex": null, "Selection": [] }, { "Name": "asd", "DisplayName": "sd", "Unit": "", "Type": "Choose and Add Value", "Required": false, "Clonable": false, "Value": null, "CloneIndex": null, "Selection": [] }, { "Name": "1", "DisplayName": "2", "Unit": "", "Type": "2", "Required": false, "Clonable": false, "Value": null, "CloneIndex": null, "Selection": [] }]
+    });
     $(".cont2").ProcessParameter("getData")
 
 });
-
-
-
-
